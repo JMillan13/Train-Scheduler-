@@ -10,85 +10,35 @@ var config = {
   firebase.initializeApp(config);
 
 
-var database = firebase.database()
-var index = 1
-var name = ""
-var role = ""
-var startDate = ""
-var monthlyRate = ""
-database.ref().on("child_added", function(snapshot) {
-var data = snapshot.val()
-console.log(data)
+  var trainName = "";
+  var destination = "";
+  var firstTrainTime = 0;
+  var frequency = "";
+     // Capture Button Click
+     $("#form-submit-button").on("click", function(event) {
+      event.preventDefault();
+      trainName = $("#trainName-input").val().trim();
+      destination = $("#destination-input").val().trim();
+      firstTrainTime = $("#firstTrainTime-input").val().trim();
+      frequency = $("#frequency-input").val().trim();
+      console.log(trainName, destination, firstTrainTime, frequency);
+      database.ref().push({
+        trainName: trainName,
+        destination: destination,
+        firstTrainTime: firstTrainTime,
+        frequency: frequency,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+      });
+    });
+    database.ref().on("child_added", function(childSnapshot) {
+      // Log everything that's coming out of snapshot
 
-/* name = snapshot.val().name
-role = snapshot.val().role
-startDate = snapshot.val().startDate
-monthlyRate = snapshot.val().monthlyRate */
+      var firstT = moment(childSnapshot.val().firstTrainTime,"hh:mm");
+      var now = moment();
+      var timeBetween = now.diff(firstT, "minutes");
+      var minutesAway = childSnapshot.val().frequency - (timeBetween%childSnapshot.val().frequency);
 
-createEmployees(data)
-})
-function createEmployees(data) {
-    var employee = data
-    console.log(employee.length)
-    name = employee.name
-    role = employee.role
-    startDate = employee.startDate
-    monthlyRate = employee.monthlyRate
 
-    var row = $("<tr>")
-    var nametag = $("<th>").text(name)
-    var roletag = $("<th>").text(role)
-    var starttag = $("<th>").text(startDate)
-    var ratetag = $("<th>").text(monthlyRate)
-    var monthtag = $("<th>").text(5)
-    var build = 5 * parseInt(monthlyRate)
-    var billedtag = $("<th>").text(build)
+    var minutesUntilTrain = childSnapshot.val().frequency - minutesAway;
 
-    row.append(nametag)
-    row.append(roletag)
-    row.append(starttag)
-    row.append(ratetag)
-    row.append(monthtag)
-    row.append(billedtag)
-
-    $("#employee").append(row)
-}
-
-$(".submitForm").on("click", function(event) {
-   event.preventDefault()
-    name = $("#name").val().trim()
-    role = $("#role").val().trim()
-    startDate = $("#startDate").val().trim()
-    monthlyRate = $("#monthlyRate").val().trim()
-    database.ref().push({
-        name: name,
-        role: role,
-        startDate: startDate,
-        monthlyRate: monthlyRate,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-    })
-})
- // Initialize Firebase
- /*var config = {
-    apiKey: "AIzaSyA0W5CYMQlloBwy2vbfoXHQgZYUXNgLsqU",
-    authDomain: "inclassproject-3da67.firebaseapp.com",
-    databaseURL: "https://inclassproject-3da67.firebaseio.com",
-    projectId: "inclassproject-3da67",
-    storageBucket: "inclassproject-3da67.appspot.com",
-    messagingSenderId: "358462140316"
-  };
-  firebase.initializeApp(config);
-
- //  dataAdded: firebase.database.ServerValue.TIMESTAMP
-
-  //child added and child changes
-  dataRef.ref().on("child_added",function(childSnapshot){
-      console.log(childSnapshot.val().name);
-  },function(errorObject){
-      console.log("Errors handled: " + errorObject.code)
-  });
-
-  data.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(ChildSnapShot))
-  //change HTML to reflect
-  $("#name-display").text(snapshot.val().name);
-  email,age,comment same thing*/
+    var NextTrain = moment().add(minutesUntilTrain, "minutes").format("hh:mm");
