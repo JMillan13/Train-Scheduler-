@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Train Schedule</title>
@@ -13,15 +14,16 @@
   <!-- Added a link to our external stylesheet-->
   <link rel="stylesheet" href="./assets/css/style.css">
   <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 </head>
+
 <body>
   <div class="container">
     <h2>
-    Anytime Is Train Time
+      Anytime Is Train Time
     </h2>
     <h2>
-    Choo Choo. Chee Chee
+      Choo Choo. Chee Chee
     </h2>
   </div>
   <table class="table">
@@ -38,25 +40,26 @@
     <tbody id="employee">
     </tbody>
   </table>
-  <form >
+  <form>
     <div class="form-group">
-      <label for="Train Name">Train Name</label>
-      <input type="text" class="form-control" id="Train Name">
+      <label for="trainName">Train Name</label>
+      <input type="text" class="form-control" id="trainName">
     </div>
     <div class="form-group">
-      <label for=">Destination">Destination</label>
-      <input type="text" class="form-control" id="Destination">
+      <label for="destination">Destination</label>
+      <input type="text" class="form-control" id="destination">
     </div>
     <div class="form-group">
-      <label for=">First Train Time (HH:mm - military time">First Train Time (HH:mm - military time)</label>
-      <input type="date" class="form-control" id="startTime">
+      <label for="firstTrainTime">First Train Time (HH:mm - military time)</label>
+      <input type="text" class="form-control" id="firstTrainTime">
     </div>
     <div class="form-group">
-      <label for="Frequency (min)">Frequency (min)</label>
-      <input type="text" class="form-control" id="endTime">
+      <label for="frequency">Frequency (min)</label>
+      <input type="text" class="form-control" id="frequency">
     </div>
     <button type="submit" class="submitForm">Submit</button>
   </form>
-<script src="assets/js/apps.js"></script>
+  <script src="assets/js/apps.js"></script>
 </body>
+
 </html>
